@@ -1,0 +1,34 @@
+<div class="navi sticky-top">
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="codification-tab" data-bs-toggle="tab" data-bs-target="#codification"
+        type="button" role="tab" aria-controls="home" aria-selected="true">Frecuencia</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="decodification-tab" data-bs-toggle="tab" data-bs-target="#decodification"
+        type="button" role="tab" aria-controls="home" aria-selected="true">Decodificación</button>
+    </li>
+    <!-- <li class="nav-item" role="presentation">
+      <button class="nav-link" id="blind-tab" data-bs-toggle="tab" data-bs-target="#blind"
+        type="button" role="tab" aria-controls="home" aria-selected="true">Busqueda ciega</button>
+    </li> -->
+  </ul>
+
+</div>
+<div class="container mt-5">
+  <app-form></app-form>
+</div>
+<div class="container mt-5 mb-5">
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="codification" role="tabpanel" aria-labelledby="codification">
+      <app-frecuency></app-frecuency>
+      <app-info-quantity></app-info-quantity>
+    </div>
+    <div class="tab-pane fade" id="decodification" role="tabpanel" aria-labelledby="decodification">
+    hola 2
+    </div>
+    <!-- <div class="tab-pane fade" id="blind" role="tabpanel" aria-labelledby="blind">
+      hola 3
+    </div> -->
+  </div>
+</div>

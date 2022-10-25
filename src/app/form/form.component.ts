@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { Codification } from 'src/codification.model';
 import { CodificationService } from '../codification.service';
 import { FrecuencyComponent } from '../frecuency/frecuency.component';
 import { InfoQuantityComponent } from '../info-quantity/info-quantity.component';
@@ -70,7 +69,8 @@ export class FormComponent {
   }
 
   generar(){
-    this.codificacionService.codification = new Codification(this.text, this.bits, [])
-    this.codificacionService.setFrecuency();
+    this.codificacionService.codification.text = this.text;
+    this.codificacionService.codification.bits = this.bits;
+    new FrecuencyComponent(this.codificacionService).setFrecuency();
   }
 }

@@ -14,11 +14,17 @@ export class InfoQuantityComponent {
   }
 
   generateKeys(){
-    return Object.keys(this.codificacionService.codification.frec)
+    return Array.from(this.codificacionService.codification.frec.keys())
   }
 
   generateEntries(){
-    return this.generateQuantity(Object.values(this.codificacionService.codification.frec))
+    let obj = this.codificacionService.codification.frec;
+    let cant = this.codificacionService.codification.text.length;
+    let array_values : string[] = [];
+    obj.forEach((value: object, key: string) => {
+        array_values.push(((Object.values(value)[0])/cant).toFixed(3));
+    });
+    return this.generateQuantity(array_values)
   }
 
   generateQuantity(potencies : string[]){

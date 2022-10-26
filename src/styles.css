@@ -38,3 +38,12 @@
   background: linear-gradient(to left, #a93b4c, #53093d);
 }
 
+.back{
+  background: rgba(226, 226, 226, 0.5);
+}
+
+.btn-purple{
+  background: linear-gradient(to left, #a93b4c, #53093d);
+  color: white;
+  font-weight: bold;
+}

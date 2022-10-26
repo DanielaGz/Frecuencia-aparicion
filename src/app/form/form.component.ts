@@ -68,9 +68,40 @@ export class FormComponent {
     this.select_file = event.target.checked
   }
 
+  handleFileInput(event : any) {
+    this.file = event.target.files[0]
+    let fileReader = new FileReader();
+    const filereader = new FileReader();
+
+    if (this.file.type.includes('image') == true) {
+
+      filereader.readAsDataURL(this.file)
+      const that = this;
+
+      filereader.onload = function() {
+              that.imgUrl = this.result;
+              that.text = typeof(this.result) === 'string' ? this.result : '';
+      };
+
+
+    }else{
+      this.imgUrl = "";
+      fileReader.readAsText(this.file)
+      fileReader.onload = (e) => {
+        this.text = typeof(fileReader.result) === 'string' ? fileReader.result : '';
+      }
+
+    }
+
+  }
+
   generar(){
+    var startTime = performance.now();
     this.codificacionService.codification.text = this.text;
     this.codificacionService.codification.bits = this.bits;
     new FrecuencyComponent(this.codificacionService).setFrecuency();
+    var endTime = performance.now()
+    this.codificacionService.codification.time= (endTime - startTime)/1000
+    this.codificacionService.codification.show_time = true;
   }
 }

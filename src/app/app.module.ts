@@ -11,6 +11,12 @@ import { FormsModule } from '@angular/forms';
 import { ContainerComponent } from './container/container.component';
 import { InfoQuantityComponent } from './info-quantity/info-quantity.component';
 import { CodificationService } from './codification.service';
+import { ToAsciiComponent } from './to-ascii/to-ascii.component';
+import { ToBinaryComponent } from './to-binary/to-binary.component';
+import { TablesInterSegComponent } from './tables-inter-seg/tables-inter-seg.component';
+import { VoltageComponent } from './voltage/voltage.component';
+import { PlotComponent } from './plot/plot.component';
+import { TextComponent } from './text/text.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +27,12 @@ import { CodificationService } from './codification.service';
     FormComponent,
     ContainerComponent,
     InfoQuantityComponent,
+    ToAsciiComponent,
+    ToBinaryComponent,
+    TablesInterSegComponent,
+    VoltageComponent,
+    PlotComponent,
+    TextComponent,
   ],
   imports: [
     BrowserModule,

@@ -12,21 +12,26 @@ export class FrecuencyComponent {
 
   setFrecuency() {
     let charts = this.codificacionService.codification.text.split('');
+    let tam = this.codificacionService.codification.text.length;
     type element = {
+      [key: string] : any;
       cant: number;
       position: number[];
+      frec: number;
     }
     let frecMapping = new Map<string, element>();
     for (let i = 0; i < charts.length; i++) {
       if(frecMapping.has(charts[i])){
         let value = frecMapping.get(charts[i])?.cant;
         let pos =frecMapping.get(charts[i])?.position;
+        let fre =frecMapping.get(charts[i])?.frec;
         pos?.push(i)
         frecMapping.set(
           charts[i],
           {
             cant: value ? value+1 : 0,
             position: pos ? pos : [],
+            frec: value ? Number(((value+1)/tam).toFixed(3)) : 0,
           }
         )
       }else{
@@ -34,7 +39,8 @@ export class FrecuencyComponent {
           charts[i],
           {
             cant: 1,
-            position: [i]
+            position: [i],
+            frec: Number((1/tam).toFixed(3))
           }
         )
       }
@@ -48,10 +54,9 @@ export class FrecuencyComponent {
 
   generateEntries() {
     let obj = this.codificacionService.codification.frec;
-    let cant = this.codificacionService.codification.text.length;
     let array_values : string[] = [];
     obj.forEach((value: object, key: string) => {
-        array_values.push(((Object.values(value)[0]*100)/cant).toFixed(3));
+        array_values.push(((Object.values(value)[2]*100)).toFixed(3));
     });
     return array_values;
   }

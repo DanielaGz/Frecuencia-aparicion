@@ -1,0 +1,43 @@
+<div class="card mt-4">
+  <div class="card-header text-center">
+    <strong>TABLAS DE INTERVALOS Y SEGMENTOS</strong>
+  </div>
+  <div class="card-body overflow-auto">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-header text-center">
+            <strong>SEGMENTOS</strong>
+          </div>
+          <div class="card-body">
+            <table class="table table-bordered text-center">
+              <tbody>
+                <tr *ngFor="let item of generateSegValues();let i = index;">
+                  <td scope="col" ><strong>{{(i)}}</strong></td>
+                  <td>{{item}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <div class="card-header text-center">
+            <strong>INTERVALOS</strong>
+          </div>
+          <div class="card-body">
+            <table class="table table-bordered text-center">
+              <tbody>
+                <tr *ngFor="let item of generateIntValues();let i = index;">
+                  <td scope="col" ><strong>{{(i)}}</strong></td>
+                  <td>{{item}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

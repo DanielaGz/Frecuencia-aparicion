@@ -12,6 +12,7 @@ export class ContainerComponent implements AfterViewInit {
   form: FormComponent;
 
 
+
   constructor(
     private codificacionService: CodificationService
   ) {
@@ -19,6 +20,18 @@ export class ContainerComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    console.log(this.form.frec)
+
+  }
+
+  hide(){
+    this.codificacionService.codification.show_time = false;
+  }
+
+  show_time(){
+    return this.codificacionService.codification.show_time
+  }
+
+  time(){
+    return this.codificacionService.codification.time
   }
 }

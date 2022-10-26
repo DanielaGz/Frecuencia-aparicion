@@ -14,7 +14,7 @@
           </div>
 
           <div class="input-group p-3" *ngIf="select_file">
-              <input type="file" class="form-control" id="document" name="document" accept="image/*,.txt">
+              <input type="file" class="form-control" id="document" name="document" accept="image/*,.txt" (change)="handleFileInput($event)">
           </div>
           <div class="input-group p-3" *ngIf="select_file">
               <img src='{{imgUrl}}'>
@@ -30,7 +30,7 @@
           </div>
 
           <div class="d-flex justify-content-end p-3">
-              <button type="submit" class="btn btn-primary rounded rounded-pill"
+              <button type="submit" class="btn btn-purple rounded rounded-pill text-white"
                (click)="generar()">Codificar</button>
           </div>
       </form>

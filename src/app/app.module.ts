@@ -14,6 +14,7 @@ import { TextComponent } from './text/text.component';
 import { CardTableComponent } from './card-table/card-table.component';
 import { DecodificationService } from './decodification.service';
 import { TableComponent } from './table/table.component';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { TableComponent } from './table/table.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    ClipboardModule
   ],
   providers: [
     CodificationService,

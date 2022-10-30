@@ -1,10 +1,15 @@
-<div class="card mt-4">
+<div class="card mt-4 mb-4">
   <div class="card-header text-center">
-    <strong>TEXTO</strong>
+    <strong>{{title}}</strong>
   </div>
   <div class="card-body overflow-auto">
-    <div class="overflow-auto" style="max-height: 400px;">
-      {{getText()}}
+    <div *ngIf="plot" class="card">
+      <div class="card_body p-3 text-center">
+        <h5>Longitud del mensaje | simbolo codificado | Cantidad de apariciones | [Posiciones] /</h5>
+      </div>
+    </div>
+    <div class="overflow-auto m-2" style="max-height: 400px;">
+      {{text}}
     </div>
   </div>
 </div>

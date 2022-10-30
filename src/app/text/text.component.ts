@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { CodificationService } from '../codification.service';
 
 @Component({
@@ -6,11 +6,25 @@ import { CodificationService } from '../codification.service';
   templateUrl: './text.component.html',
   styleUrls: ['./text.component.css']
 })
-export class TextComponent{
+export class TextComponent implements OnInit, AfterViewInit{
 
-  constructor(private codificacionService: CodificationService) { }
+  @Input() text: string;
+  @Input() title: string;
+  @Input() plot: boolean;
+  constructor(
+    public codificacionService: CodificationService,
+    private cd : ChangeDetectorRef
+  ) {
+    this.text = '';
+    this.title = '';
+    this.plot = false;
+  }
 
-  getText(){
-    return this.codificacionService.codification.text;
+  ngOnInit(): void {
+
+  }
+
+  ngAfterViewInit(): void {
+    this.cd.detectChanges();
   }
 }

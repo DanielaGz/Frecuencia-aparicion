@@ -1,0 +1,29 @@
+<div class="card mt-4">
+  <div class="card-header text-center">
+    <strong>RESULTADOS</strong>
+  </div>
+  <div class="card-body overflow-auto">
+    <div class="table-responsive">
+      <table class="table table-bordered text-center ">
+        <thead>
+          <tr>
+            <th>VALOR DE</th>
+            <th *ngFor="let item of getHeader();">
+              {{item}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let method of array_method">
+            <th>{{method.toUpperCase()}}</th>
+            <td *ngFor="let item of loadMethod(method)">{{item}}</td>
+          </tr>
+        </tbody>
+        <tbody>
+
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+

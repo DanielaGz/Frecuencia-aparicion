@@ -47,3 +47,10 @@
   color: white;
   font-weight: bold;
 }
+
+.table th:first-child,
+.table td:first-child {
+  position: sticky;
+  left: 0;
+  background-color: white;
+}

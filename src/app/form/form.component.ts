@@ -1,44 +1,32 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CodificationService } from '../codification.service';
-import { FrecuencyComponent } from '../frecuency/frecuency.component';
-import { InfoQuantityComponent } from '../info-quantity/info-quantity.component';
-
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css']
 })
-export class FormComponent {
+export class FormComponent implements AfterViewInit {
 
   text: string;
   bits: number;
   frec : object;
 
   document: File | null;
-
   file: any;
-
-  voltage: number;
-
-  bits_array: Number[];
-  binary_text: string;
-  ascii_text: string;
-  vol_text: string;
-  recept_vol_text: string;
-  recept_num_text: string;
-  recept_letters_text: string;
-
-  segments: string[];
-  intervals: string[];
-
   time: number;
   show_time : boolean;
 
   imgUrl: any;
 
   select_file : boolean;
+
+  @Input() operation : string;
+  @Input() title_button : string;
+  @Output() generateFunction:  EventEmitter<any> = new EventEmitter();
+
   constructor(
-    private codificacionService: CodificationService
+    private codificacionService: CodificationService,
+    private cd : ChangeDetectorRef
   ) {
     this.text = "";
     this.bits = 8;
@@ -47,21 +35,12 @@ export class FormComponent {
     this.document = null;
 
     this.file = null;
-
-    this.voltage = 1;
-
-    this.bits_array = [];
-    this.binary_text = "";
-    this.ascii_text = "";
-    this.vol_text = "";
-    this.recept_vol_text = "";
-    this.recept_num_text = "";
-    this.recept_letters_text = "";
-    this.intervals = [];
-    this.segments = [];
     this.time = 0;
     this.show_time = false;
     this.select_file = false;
+
+    this.operation = '';
+    this.title_button = '';
   }
 
   selectFile(event : any) {
@@ -96,12 +75,15 @@ export class FormComponent {
   }
 
   generar(){
-    var startTime = performance.now();
-    this.codificacionService.codification.text = this.text;
-    this.codificacionService.codification.bits = this.bits;
-    new FrecuencyComponent(this.codificacionService).setFrecuency();
-    var endTime = performance.now()
-    this.codificacionService.codification.time= (endTime - startTime)/1000
-    this.codificacionService.codification.show_time = true;
+    let obj= {
+      operation: this.operation,
+      bits: this.bits,
+      text: this.text
+    }
+    this.generateFunction.emit(obj)
+  }
+
+  ngAfterViewInit(): void {
+    this.cd.detectChanges();
   }
 }

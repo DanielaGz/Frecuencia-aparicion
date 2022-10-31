@@ -5,41 +5,39 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
-import { FrecuencyComponent } from './frecuency/frecuency.component';
 import { FormComponent } from './form/form.component';
 import { FormsModule } from '@angular/forms';
 import { ContainerComponent } from './container/container.component';
-import { InfoQuantityComponent } from './info-quantity/info-quantity.component';
 import { CodificationService } from './codification.service';
-import { ToAsciiComponent } from './to-ascii/to-ascii.component';
-import { ToBinaryComponent } from './to-binary/to-binary.component';
 import { TablesInterSegComponent } from './tables-inter-seg/tables-inter-seg.component';
-import { VoltageComponent } from './voltage/voltage.component';
-import { PlotComponent } from './plot/plot.component';
 import { TextComponent } from './text/text.component';
+import { CardTableComponent } from './card-table/card-table.component';
+import { DecodificationService } from './decodification.service';
+import { TableComponent } from './table/table.component';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    FrecuencyComponent,
     FormComponent,
     ContainerComponent,
-    InfoQuantityComponent,
-    ToAsciiComponent,
-    ToBinaryComponent,
     TablesInterSegComponent,
-    VoltageComponent,
-    PlotComponent,
     TextComponent,
+    CardTableComponent,
+    TableComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    ClipboardModule
   ],
-  providers: [CodificationService],
+  providers: [
+    CodificationService,
+    DecodificationService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

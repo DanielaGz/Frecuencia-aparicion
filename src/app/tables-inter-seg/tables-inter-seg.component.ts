@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CodificationService } from '../codification.service';
+import { DecodificationService } from '../decodification.service';
 
 @Component({
   selector: 'app-tables-inter-seg',
@@ -8,11 +9,15 @@ import { CodificationService } from '../codification.service';
 })
 export class TablesInterSegComponent{
 
-  constructor(private codificacionService: CodificationService) { }
+  @Input() codificacionService: CodificationService | DecodificationService;
+
+  constructor(codificacionService: CodificationService) {
+    this.codificacionService = new CodificationService();
+   }
 
   generateIntValues(){
-    let cant_interval = this.codificacionService.getInterval();
-    let cant_segments = this.codificacionService.getSegments();
+    let cant_interval = this.codificacionService.codification.getInterval();
+    let cant_segments = this.codificacionService.codification.getSegments();
     let tam_intervalo = 1 / (cant_interval * cant_segments);
     let interval_array = [];
     let tam = Number(tam_intervalo)*1000;
@@ -30,8 +35,8 @@ export class TablesInterSegComponent{
   }
 
   generateSegValues(){
-    let cant_interval = this.codificacionService.getInterval();
-    let cant_segments = this.codificacionService.getSegments();
+    let cant_interval = this.codificacionService.codification.getInterval();
+    let cant_segments = this.codificacionService.codification.getSegments();
     let tam_intervalo = 1 / (cant_interval * cant_segments);
     let segments_array = [0,];
     let tam = (Number(tam_intervalo)*1000) * cant_interval;
@@ -44,6 +49,7 @@ export class TablesInterSegComponent{
     for (let i = 1; i < segments_array.length; i++) {
       array_print.push(segments_array[i-1]+' - '+segments_array[i]);
     }
+
     return array_print
   }
 

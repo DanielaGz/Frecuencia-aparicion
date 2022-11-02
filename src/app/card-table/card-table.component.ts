@@ -1,29 +1,62 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CodificationService } from '../codification.service';
+import { DecodificationService } from '../decodification.service';
 
 @Component({
   selector: 'app-card-table',
   templateUrl: './card-table.component.html',
   styleUrls: ['./card-table.component.css']
 })
-export class CardTableComponent implements OnInit{
+export class CardTableComponent{
 
-  @Input() title : string;
-  @Input() method : string;
+  array_method = [
+    'frecuency',
+    'percent_frecuency',
+    'quantity',
+    'unicode',
+    'binary',
+    'voltage'
+  ]
 
-  @Input() keys : string[];
-  @Input() values: string[];
+  key: string[]
 
-  constructor(private codificacionService: CodificationService) {
-    this.title = '';
-    this.method = '';
-    this.keys = [];
-    this.values = [];
+  @Input() decodificacionService: DecodificationService;
+
+  constructor(decodificacionService: DecodificationService) {
+    this.decodificacionService = new DecodificationService();
+    this.key = []
+   }
+
+  generateSegValues(){
+
+    return this.decodificacionService.decodification.segments
+
   }
 
-  ngOnInit(): void {
-
+  generateIntValues(){
+    
+    return this.decodificacionService.decodification.intervals
   }
+
+  getHeader(){
+    const values = Array.from(this.decodificacionService.decodification.frec.values());
+    return values;
+  }
+
+  informacion(num: Number){
+    return (Number(num)*Math.log2(1/Number(num)))
+  }
+
+  entropia(){
+    let sum = 0
+    for(let p of this.getHeader()){
+      sum += Number(this.informacion(p.frec))
+    }
+    return sum
+  }
+  totalsimbolos(){
+    return this.decodificacionService.decodification.cantsymbols
+  }
+  
 
 
 }

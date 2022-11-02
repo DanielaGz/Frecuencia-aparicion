@@ -245,10 +245,10 @@ export class CodificationService{
       return '';
     }
     let long = this.codification.text.length
-    let plot_text = ""
+    let plot_text = long+'/'
 
     this.codification.frec.forEach((value: object, key: string) => {
-      plot_text += long+'|'+Object.values(value)[5]+'|'+Object.values(value)[0]+'|['+Object.values(value)[1]+']/';
+      plot_text += Object.values(value)[5]+'|'+Object.values(value)[0]+'|['+Object.values(value)[1]+']/';
     });
 
     return plot_text;

@@ -36,7 +36,7 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
   ],
   providers: [
     CodificationService,
-    DecodificationService
+    DecodificationService,
   ],
   bootstrap: [AppComponent]
 })

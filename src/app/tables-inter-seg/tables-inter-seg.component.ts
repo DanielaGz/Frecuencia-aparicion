@@ -9,7 +9,7 @@ import { DecodificationService } from '../decodification.service';
 })
 export class TablesInterSegComponent{
 
-  @Input() codificacionService: CodificationService | DecodificationService;
+  @Input() codificacionService: CodificationService;
 
   constructor(codificacionService: CodificationService) {
     this.codificacionService = new CodificationService();

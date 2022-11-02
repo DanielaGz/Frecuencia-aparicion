@@ -2,6 +2,7 @@ import { Component, AfterViewInit, ViewChild, ChangeDetectorRef, OnInit } from '
 import { FormComponent } from '../form/form.component';
 import { CodificationService } from '../codification.service';
 import { Codification } from '../codification.model';
+import { DeCodification } from '../decodification.model';
 import { DecodificationService } from '../decodification.service';
 
 @Component({
@@ -19,10 +20,14 @@ export class ContainerComponent implements OnInit, AfterViewInit{
 
   hide(){
     this.codificacionService.codification.show_time = false;
+    this.decodificacionService.decodification.show_time = false;
   }
 
   show_time(){
-    return this.codificacionService.codification.show_time
+    if(this.codificacionService.codification.show_time || this.decodificacionService.decodification.show_time){
+      return true
+    }
+    return false
   }
 
   time(){
@@ -40,7 +45,7 @@ export class ContainerComponent implements OnInit, AfterViewInit{
       case 'decodification': {
         console.log('no')
         this.decodificacionService = new DecodificationService()
-        this.decodificacionService.codification = new Codification(Object.values(data)[2], Number(Object.values(data)[1]))
+        this.decodificacionService.decodification = new DeCodification(Object.values(data)[2], Number(Object.values(data)[1]))
         this.decodificacionService.decoder();
         break;
       }

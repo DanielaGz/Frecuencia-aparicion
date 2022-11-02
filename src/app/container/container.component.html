@@ -29,9 +29,15 @@
     <div class="tab-pane fade" id="decodification" role="tabpanel" aria-labelledby="decodification">
       <app-form (generateFunction)="generateFunction($event)" [operation]="'decodification'"
         [title_button]="'Decodificar'"></app-form>
-      <app-text [title]="'TEXTO'" [text]="decodificacionService.codification.text"></app-text>
-      <app-card-table [title]="'INFORMACION'" [keys]="decodificacionService.selectKeysMethod('get_info')"
-        [values]="decodificacionService.selectValuesMethod('get_info')"></app-card-table>
+      <app-text [title]="'TEXTO'" [text]="decodificacionService.decodification.text"></app-text>
+      
+      <app-card-table [decodificacionService]="decodificacionService"></app-card-table>
+
+      <app-text [title]="'MENSAJE ORIGINAL'" [text]="decodificacionService.decodification.mensaje"></app-text>
+      
+      <div class="input-group p-3" *ngIf="decodificacionService.decodification.mensaje.includes('data:image/')">
+          <img src='{{decodificacionService.decodification.mensaje}}'>
+      </div>
       <!-- <app-tables-inter-seg [codificacionService]="decodificacionService"></app-tables-inter-seg>
         <app-table [codificacionService]="decodificacionService" ></app-table> -->
     </div>

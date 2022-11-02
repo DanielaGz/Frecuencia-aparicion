@@ -109,5 +109,8 @@
       }
     }
   },
-  "defaultProject": "Frecuencia-aparicion"
+  "defaultProject": "Frecuencia-aparicion",
+  "cli": {
+    "analytics": "79643e74-3d31-4408-b4a1-fbbe79cacb2d"
+  }
 }

@@ -1,9 +1,9 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { Codification } from './codification.model';
+import { DeCodification } from './decodification.model';
 
 @Injectable()
 export class DecodificationService {
-  codification: Codification = new Codification('3|+757.813|1|[0]/3|+898.438|1|[1]/3|+781.250|1|[2]/', 8);
+  decodification: DeCodification = new DeCodification('', 8);
   text_lenght : number = 0
 
   constructor() {}
@@ -11,7 +11,14 @@ export class DecodificationService {
   //------------------------------------DECODER------------------------
 
   decoder() {
-    console.log('hola');
+    var startTime = performance.now();
+    this.decodification.text = this.decodification.text.split(" ").join("");
+    this.decodification.text = this.decodification.text.replace(/(\r\n|\n|\r)/gm, "");
+    this.iniciarproceso();
+    var endTime = performance.now()
+    this.decodification.time= (endTime - startTime)/1000
+    this.decodification.show_time = true;
+
   }
 
   selectKeysMethod(method: string) :any{
@@ -34,20 +41,50 @@ export class DecodificationService {
     type element = {
       [key: string] : any;
     }
-    let frecMapping = new Map<string, element>();
-    let caracter_info = this.codification.text.split('/')
-    caracter_info.pop()
-    caracter_info.forEach((value: string)=>{
-      let letra_info = value.split('|')
-        frecMapping.set(
-          letra_info[1],
-          {
-            position:  letra_info[3],
-            frec: letra_info[2],
-          }
-        )
-    })
-    console.log(frecMapping)
+    
     return [];
   }
+
+  iniciarproceso(){
+  
+    let caracter_info = this.decodification.text.split('/');
+    let cantsymbols = Number(caracter_info.shift());
+    this.decodification.cantsymbols = cantsymbols;
+    type element = {
+      [key: string] : any;
+      cant: number;
+      position: number[];
+      frec: number;
+      vol: string;
+      symbol: string;
+    }
+    let frecMapping = new Map<string, element>();
+
+    for (let i = 0; i < caracter_info.length; i++) {
+      if(caracter_info[i] != ""){
+        let trama = caracter_info[i].split('|');
+        let key = trama[0];
+        let cant = Number(trama[1]);
+        let position = JSON.parse(trama[2]);
+        
+        this.decodification.createTables(1); //proceso alternativo
+
+        frecMapping.set(
+          key,
+          {
+            cant: cant,
+            position: position,
+            frec: Number((cant/cantsymbols)),
+            vol: key,
+            symbol: this.decodification.getletra(key)
+          }
+        )
+      }
+    }
+    this.decodification.frec = frecMapping;
+    
+    this.decodification.getmensaje2();
+  }
+
+
 }

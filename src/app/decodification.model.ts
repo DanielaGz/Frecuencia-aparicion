@@ -7,7 +7,7 @@ type element = {
   symbol: string;
 }
 export class DeCodification{
-  
+
   frec :Map<string,element>
   intervals : number[]
   segments : number[]
@@ -71,7 +71,7 @@ export class DeCodification{
       for(const p of element.position){
         textfinal[p] = letra
       }
-      
+
     });
 
     this.mensaje += textfinal.join('');
@@ -84,7 +84,7 @@ export class DeCodification{
       for(const p of element.position){
         textfinal[p] = element.symbol+""
       }
-      
+
     });
 
     this.mensaje += textfinal.join('');
@@ -112,29 +112,31 @@ export class DeCodification{
             break;
         }
     }
-    if(mun_segmento == -1){//verifcar que encontro un segmento -> mun_segmenyo 
+    if(mun_segmento == -1){//verifcar que encontro un segmento -> mun_segmenyo
         mun_segmento = (this.segments.length-1);
     }
-        
+
     // buscar intervalo
     let mun_intervalo = -1;
     let aux = Number((parseFloat(vol.substring(1)) - Number(this.segments[mun_segmento])).toFixed(5));
-    
-    for (var i = 0; i < (this.intervals.length-1); i++) { //buscar segmento
-          if(this.intervals[i]<=aux && this.intervals[i+1]>aux){
+
+    for (var i = 0; i <= (this.intervals.length); i++) { //buscar segmento
+      let interv = Number(Number(this.intervals[i]).toFixed(3))
+      let next_interv = Number(Number(this.intervals[i+1]).toFixed(3))
+          if(interv<=aux && next_interv>aux){
             mun_intervalo = i
               break;
             }
     }
-    if(mun_intervalo == -1){//verifcar que encontro un intervalo -> mun_intervalo, sino significa que es el ultimo 
+    if(mun_intervalo == -1){//verifcar que encontro un intervalo -> mun_intervalo, sino significa que es el ultimo
           mun_intervalo = (this.intervals.length);
     }
     // tocar pasar el mun_segmenyo a binario si es 8bits, entonees solo puete tener 3 ceros -> 1 = 001, 4 = 100
     let seg_binario = this.to_by(mun_segmento, this.getArrayBits((this.bits_config as any)[this.bits]['seg'])); //pasar a binario
     let intr_binario = this.to_by(mun_intervalo, this.getArrayBits((this.bits_config as any)[this.bits]['int'])); //pasar a binario
- 
+
     binario += seg_binario+""+intr_binario+"";
- 
+
 
     return binario
   }
@@ -166,24 +168,24 @@ export class DeCodification{
 
 
   createTables(voltage : number){
-    let cant_interval = (this.bits_config as any)[this.bits]['intervals'];    
+    let cant_interval = (this.bits_config as any)[this.bits]['intervals'];
     //console.log(cant_interval)
     let segments_array = (this.bits_config as any)[this.bits]['segments']; //8
     let interval_array = [cant_interval]; //16
-    let tam_interval = voltage / (cant_interval * segments_array) //x, vol = 
+    let tam_interval = voltage / (cant_interval * segments_array) //x, vol =
     segments_array = this.to_segmento(tam_interval);
-    
+
     this.segments = segments_array
     interval_array = this.to_interval(tam_interval);
-    
+
     this.intervals = interval_array
-  } 
-  
+  }
+
   to_interval(tam_intervalo: Number) {
     let cant_interval = (this.bits_config as any)[this.bits]['intervals'];
     let interval_array = [];
     let tam = Number(tam_intervalo)*1000;
-    
+
     for (var i = 0; i <= cant_interval; i++) {
       interval_array.push(Number(i * tam));
     }
@@ -261,7 +263,7 @@ export class DeCodification{
   }
 
   num_to_asciiletters(num: string){
-    
+
     return String.fromCharCode(parseInt(num))+"";
   }
 }

@@ -43,7 +43,6 @@ export class ContainerComponent implements OnInit, AfterViewInit{
         break;
       }
       case 'decodification': {
-        console.log('no')
         this.decodificacionService = new DecodificationService()
         this.decodificacionService.decodification = new DeCodification(Object.values(data)[2], Number(Object.values(data)[1]))
         this.decodificacionService.decoder();

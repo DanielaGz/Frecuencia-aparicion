@@ -18,7 +18,6 @@ export class DecodificationService {
     var endTime = performance.now()
     this.decodification.time= (endTime - startTime)/1000
     this.decodification.show_time = true;
-
   }
 
   selectKeysMethod(method: string) :any{
@@ -41,12 +40,12 @@ export class DecodificationService {
     type element = {
       [key: string] : any;
     }
-    
+
     return [];
   }
 
   iniciarproceso(){
-  
+
     let caracter_info = this.decodification.text.split('/');
     let cantsymbols = Number(caracter_info.shift());
     this.decodification.cantsymbols = cantsymbols;
@@ -66,7 +65,7 @@ export class DecodificationService {
         let key = trama[0];
         let cant = Number(trama[1]);
         let position = JSON.parse(trama[2]);
-        
+
         this.decodification.createTables(1); //proceso alternativo
 
         frecMapping.set(
@@ -82,7 +81,7 @@ export class DecodificationService {
       }
     }
     this.decodification.frec = frecMapping;
-    
+
     this.decodification.getmensaje2();
   }
 

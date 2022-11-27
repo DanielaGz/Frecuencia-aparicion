@@ -14,8 +14,8 @@
         </thead>
         <tbody>
           <tr *ngFor="let method of array_method">
-            <th>{{method.toUpperCase()}}</th>
-            <td *ngFor="let item of loadMethod(method)">{{item}}</td>
+            <th>{{method.name.toUpperCase()}}</th>
+            <td *ngFor="let item of loadMethod(method.value)">{{item}}</td>
           </tr>
         </tbody>
         <tbody>

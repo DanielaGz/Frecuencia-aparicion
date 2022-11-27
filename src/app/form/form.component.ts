@@ -19,6 +19,7 @@ export class FormComponent implements AfterViewInit {
   imgUrl: any;
 
   select_file : boolean;
+  bloques:string = "";
 
   @Input() operation : string;
   @Input() title_button : string;
@@ -78,7 +79,8 @@ export class FormComponent implements AfterViewInit {
     let obj= {
       operation: this.operation,
       bits: this.bits,
-      text: this.text
+      text: this.text,
+      blocks: this.bloques
     }
     this.generateFunction.emit(obj)
   }

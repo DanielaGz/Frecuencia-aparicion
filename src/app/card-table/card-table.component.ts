@@ -56,6 +56,12 @@ export class CardTableComponent{
   totalsimbolos(){
     return this.decodificacionService.decodification.cantsymbols
   }
+
+  tramas(){
+    return this.decodificacionService.decodification.tramas
+  }
+
+
   
 
 

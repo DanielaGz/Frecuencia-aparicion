@@ -3,7 +3,7 @@ import { Codification } from "./codification.model";
 
 @Injectable()
 export class CodificationService{
-  codification: Codification = new Codification('', 8);
+  codification: Codification = new Codification('', 8, 1);
   next :boolean = false;
 
 
@@ -15,6 +15,8 @@ export class CodificationService{
 
   encoder(){
     var startTime = performance.now();
+    this.codification.generateIntValues();
+    this.codification.generateSegValues();
     this.setFrecuency();
     var endTime = performance.now()
     this.codification.time= (endTime - startTime)/1000
@@ -47,62 +49,61 @@ export class CodificationService{
    }
   }
 
-  selectValuesMethod(method: string) :any{
-    switch(method) {
-      case 'frecuency': {
-         return this.getFrecuencyValues();
-      }
-      case 'percent_frecuency': {
-        return this.getPercentFrecuencyValues();
-      }
-      case 'quantity': {
-        return this.getQuantityValues();
-      }
-      case 'unicode': {
-        return this.generateUnicodeValues();
-      }
-      case 'binary': {
-        return this.getBinaryValues();
-      }
-      case 'voltage': {
-        return this.getVoltageValues();
-      }
-   }
-  }
-
   // FRECUENCY
 
   setFrecuency() {
-    let charts = this.codification.text.split('');
+    let charts = this.getValuesChar()
     let tam = this.codification.text.length;
     type element = {
       [key: string] : any;
       cant: number;
       position: number[];
-      frec: number;
+      frec: string;
     }
     let frecMapping = new Map<string, element>();
     for (let i = 0; i < charts.length; i++) {
+      let val_text = charts[i].split('')
+      let ascii = ''
+      let binary = ''
+      let voltages = ''
+      for (let index = 0; index < val_text.length; index++) {
+        let ascii_value = val_text[index].charCodeAt(0);
+        ascii += ascii_value+',';
+        let binary_value = this.codification.decimalToBinary(ascii_value);
+        binary += binary_value+','
+        voltages += this.getVoltages(binary_value)+','
+      }
+      let frecuency = Number((1/Math.ceil(tam/this.codification.blocks)))
       if(frecMapping.has(charts[i])){
         let value = frecMapping.get(charts[i])?.cant;
         let pos =frecMapping.get(charts[i])?.position;
-        let fre =frecMapping.get(charts[i])?.frec;
+        frecuency = value ? (Number((value+1)/Math.ceil(tam/this.codification.blocks))) : (0)
+        let quantity = this.codification.getLogBase(1/frecuency)
         pos?.push(i)
         frecMapping.set(
           charts[i],
           {
             cant: value ? value+1 : 0,
             position: pos ? pos : [],
-            frec: value ? Number(((value+1)/tam).toFixed(3)) : 0,
+            frec: (frecuency*100).toFixed(3) +'%',
+            ascii: ascii,
+            binary: binary,
+            voltages: voltages,
+            quantity: quantity
           }
         )
-      }else{
+      }else{  
+        let quantity = this.codification.getLogBase(1/frecuency)
         frecMapping.set(
           charts[i],
           {
             cant: 1,
             position: [i],
-            frec: Number((1/tam).toFixed(3))
+            frec: (frecuency*100).toFixed(3)+'%',
+            ascii: ascii,
+            binary: binary,
+            voltages: voltages,
+            quantity: quantity
           }
         )
       }
@@ -110,17 +111,33 @@ export class CodificationService{
     this.codification.frec = frecMapping;
   }
 
-  getFrecuencyKeys() {
-    return Array.from(this.codification.frec.keys());
+  getVoltages(binary: string){
+    let seg = binary.substring(1, this.codification.getSeg() + 1);
+    let inter = binary.substring(
+      this.codification.getSeg() + 1,
+      this.codification.bits
+    );
+    let signo = binary.substring(0, 1) == '1' ? '-' : '+';
+    return signo +
+    (this.codification.segments[this.codification.binaryToDecimal(seg)] +
+    this.codification.intervals[this.codification.binaryToDecimal(inter)]).toFixed(3)
   }
 
-  getFrecuencyValues(){
-    let obj = this.codification.frec;
-    let array_values : string[] = [];
-    obj.forEach((value: object, key: string) => {
-        array_values.push(Object.values(value)[0]);
-    });
-    return array_values;
+  getValuesChar(){
+    let char = []
+    let tam = this.codification.text.length;
+    for (let index = 0; index < tam; index = (index+this.codification.blocks)) {
+      let tam_max = index+this.codification.blocks
+      if(tam_max > tam){
+        tam_max = tam;
+      }
+      char.push(this.codification.text.slice(index, tam_max))
+    }
+    return char
+  }
+
+  getFrecuencyKeys() {
+    return Array.from(this.codification.frec.keys());
   }
 
   //FRECUENCY PERCENT
@@ -128,37 +145,10 @@ export class CodificationService{
   getPercentFrecuencyKeys() {
     return Array.from(this.codification.frec.keys());
   }
-
-  getPercentFrecuencyValues(){
-    let obj = this.codification.frec;
-    let array_values : string[] = [];
-    obj.forEach((value: object, key: string) => {
-        array_values.push(((Object.values(value)[2]*100)).toFixed(3)+' %');
-    });
-    return array_values;
-  }
-
   // INFO QUANTITY
 
   getQuantityKeys(){
     return Array.from(this.codification.frec.keys())
-  }
-
-  getQuantityValues(){
-    let obj = this.codification.frec;
-    let array_values : string[] = [];
-    obj.forEach((value: object, key: string) => {
-        array_values.push(((Object.values(value)[2])).toFixed(3));
-    });
-    return this.generateQuantity(array_values)
-  }
-
-  generateQuantity(potencies : string[]){
-    let quantity_array = [];
-    for (let potency of potencies){
-      quantity_array.push(this.codification.getLogBase(1/Number(potency)));
-    }
-    return quantity_array;
   }
 
   // UNICODE
@@ -167,83 +157,20 @@ export class CodificationService{
     return Array.from(this.codification.frec.keys())
   }
 
-  generateUnicodeValues(){
-    let array_values : number[] = [];
-    this.codification.frec.forEach((value: object, key: string) => {
-        Object.defineProperty(value, "ascii",{
-          value : key.charCodeAt(0),
-          enumerable: true
-        })
-        array_values.push(key.charCodeAt(0))
-    });
-
-    return array_values
-  }
-
   // BINARY
 
   getBinaryKeys() {
     return Array.from(this.codification.frec.keys());
   }
 
-  getBinaryValues() {
-    let array_values: number[] = [];
-    this.codification.frec.forEach(
-      (value: object, key: string) => {
-        Object.defineProperty(value, 'binary', {
-          value: this.codification.decimalToBinary(Object.values(value)[3]),
-          enumerable: true,
-          configurable: true,
-        });
-        array_values.push(Object.values(value)[4]);
-      }
-    );
-    return array_values;
-  }
-
-
   // VOLTAGE
 
   getVoltageKeys() {
     return Array.from(this.codification.frec.keys());
   }
-
-  getVoltageValues() {
-    let interval_array = this.codification.intervals;
-    let segments_array = this.codification.segments;
-    let array_print: string[] = [];
-    this.codification.frec.forEach(
-      (value: object, key: string) => {
-        let binary = Object.values(value)[4];
-        let seg = binary.substring(1, this.codification.getSeg() + 1);
-        let inter = binary.substring(
-          this.codification.getSeg() + 1,
-          this.codification.bits
-        );
-        let signo = binary.substring(0, 1) == '1' ? '-' : '+';
-        Object.defineProperty(value, 'voltage', {
-          value:
-          signo +
-            (segments_array[this.codification.binaryToDecimal(seg)] +
-              interval_array[this.codification.binaryToDecimal(inter)]).toFixed(3),
-          enumerable: true,
-          configurable: true,
-        });
-        array_print.push(Object.values(value)[5]);
-      }
-    );
-
-    this.next = true;
-
-    return array_print;
-  }
-
   //PLOT
 
   getPlot(){
-    if(!this.next){
-      return '';
-    }
     let long = this.codification.text.length
     let plot_text = long+'/'
 

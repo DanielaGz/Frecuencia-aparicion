@@ -38,7 +38,7 @@ export class ContainerComponent implements OnInit, AfterViewInit{
     switch(Object.values(data)[0]) {
       case 'codification': {
         this.codificacionService = new CodificationService()
-        this.codificacionService.codification = new Codification(Object.values(data)[2], Number(Object.values(data)[1]))
+        this.codificacionService.codification = new Codification(Object.values(data)[2], Number(Object.values(data)[1]), Number(Object.values(data)[3]))
         this.codificacionService.encoder();
         break;
       }

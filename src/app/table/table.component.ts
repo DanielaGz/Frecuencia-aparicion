@@ -10,15 +10,33 @@ import { DecodificationService } from '../decodification.service';
 export class TableComponent implements OnInit, AfterViewInit {
 
   array_method = [
-    'frecuency',
-    'percent_frecuency',
-    'quantity',
-    'unicode',
-    'binary',
-    'voltage'
+    {
+      name: 'frecuency',
+      value: 0
+    },
+    {
+      name: 'percent_frecuency',
+      value: 2
+    },
+    {
+      name : 'quantity',
+      value : 6
+    },
+    {
+      name: 'unicode',
+      value: 3
+    },
+    {
+      name: 'binary',
+      value: 4
+    },
+    {
+      name: 'voltage',
+      value: 5
+    }
   ]
 
-  @Input() codificacionService:CodificationService | DecodificationService
+  @Input() codificacionService:CodificationService
 
   constructor(
     private cd: ChangeDetectorRef
@@ -34,8 +52,13 @@ export class TableComponent implements OnInit, AfterViewInit {
     return this.codificacionService.selectKeysMethod('frecuency');
   }
 
-  loadMethod(method: string){
-    return this.codificacionService.selectValuesMethod(method);
+  loadMethod(method: number){
+    let obj = this.codificacionService.codification.frec;
+    let array_values : string[] = [];
+    obj.forEach((value: object, key: string) => {
+        array_values.push(Object.values(value)[method]);
+    });
+    return array_values;
   }
 
   ngAfterViewInit(): void {

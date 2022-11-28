@@ -54,32 +54,42 @@ export class DecodificationService {
       cant: number;
       position: number[];
       frec: number;
-      vol: string;
+      vol: string[];
       symbol: string;
+      
     }
     let frecMapping = new Map<string, element>();
-
+    let bloque = 1;
+    this.decodification.tramas = caracter_info.length -1;
     for (let i = 0; i < caracter_info.length; i++) {
       if(caracter_info[i] != ""){
         let trama = caracter_info[i].split('|');
-        let key = trama[0];
+        let vols = trama[0].split(',')
+        vols.pop();
+        let key = i+"";
         let cant = Number(trama[1]);
         let position = JSON.parse(trama[2]);
-
+        
         this.decodification.createTables(1); //proceso alternativo
+        let symbols = "";
 
+        for (let i = 0; i < vols.length; i++) {
+          symbols += this.decodification.getletra(vols[i])+"";
+        }
+      
         frecMapping.set(
           key,
           {
             cant: cant,
             position: position,
             frec: Number((cant/cantsymbols)),
-            vol: key,
-            symbol: this.decodification.getletra(key)
+            vol: vols,
+            symbol: symbols
           }
         )
       }
     }
+    
     this.decodification.frec = frecMapping;
 
     this.decodification.getmensaje2();

@@ -3,8 +3,9 @@ type element = {
   cant: number;
   position: number[];
   frec: number;
-  vol: string;
+  vol: string[];
   symbol: string;
+  
 }
 export class DeCodification{
 
@@ -14,6 +15,7 @@ export class DeCodification{
   show_time: boolean
   time: number
   cantsymbols: number
+  tramas: number
   mensaje: string
 
   bits_config = {
@@ -46,7 +48,7 @@ export class DeCodification{
       cant: number;
       position: number[];
       frec: number;
-      vol: string;
+      vol: string[];
       symbol: string;
     }
     this.frec = new Map<string, element>()
@@ -55,11 +57,12 @@ export class DeCodification{
     this.show_time = false;
     this.time = 0;
     this.cantsymbols = 0;
+    this.tramas = 0;
     this.mensaje = ""
   }
 
   getmensaje(){
-    this.mensaje = ""
+    /*this.mensaje = ""
     let textfinal = new Array(this.cantsymbols)
     this.frec.forEach(element => {
       let vol = element.vol
@@ -74,7 +77,7 @@ export class DeCodification{
 
     });
 
-    this.mensaje += textfinal.join('');
+    this.mensaje += textfinal.join('');*/
   }
 
   getmensaje2(){
